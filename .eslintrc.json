@@ -5,5 +5,13 @@
     "@next/next/no-img-element": "warn",
     "react-hooks/exhaustive-deps": "warn",
     "react/no-unescaped-entities": "off"
-  }
+  },
+  "overrides": [
+    {
+      "files": ["**/*.js", "**/*.jsx"],
+      "rules": {
+        "react/no-unescaped-entities": "off"
+      }
+    }
+  ]
 }

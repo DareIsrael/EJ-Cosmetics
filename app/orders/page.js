@@ -1,3 +1,5 @@
+/* eslint react/no-unescaped-entities: "off" */
+
 'use client';
 import { useState, useEffect } from 'react';
 import { orderAPI } from '@/services/api';

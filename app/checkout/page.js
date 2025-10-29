@@ -1,3 +1,5 @@
+/* eslint react/no-unescaped-entities: "off" */
+
 // 'use client';
 // import { useState } from 'react';
 // import { useCart } from '@/contexts/CartContext';
@@ -669,6 +671,9 @@
 
 
 // // app/checkout/page.js
+
+
+/* eslint react/no-unescaped-entities: "off" */
 'use client';
 import { useState } from 'react';
 import { useCart } from '@/contexts/CartContext';
