@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { verifyPayment } from '@/controllers/orderController';
+import { verifyOrderPayment } from '@/controllers/orderController';
 import crypto from 'crypto';
 
 export async function POST(request) {
@@ -25,7 +25,7 @@ export async function POST(request) {
     // Handle payment success webhook
     if (event.event === 'charge.success') {
       const reference = event.data.reference;
-      await verifyPayment(reference);
+      await verifyOrderPayment(reference);
     }
 
     return NextResponse.json({ received: true });

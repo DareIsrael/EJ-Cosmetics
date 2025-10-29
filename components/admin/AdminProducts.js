@@ -2,6 +2,8 @@
 import { useState, useEffect } from 'react';
 import { productAPI } from '@/services/api';
 import toast from 'react-hot-toast';
+import Image from 'next/image';
+
 
 export default function AdminProducts() {
   const [products, setProducts] = useState([]);
@@ -245,7 +247,7 @@ export default function AdminProducts() {
             {/* Image Preview */}
             {formData.image && (
               <div className="mb-4 text-center">
-                <img 
+                <img
                   src={formData.image} 
                   alt="Preview" 
                   className="w-32 h-32 object-cover rounded-lg mx-auto border"

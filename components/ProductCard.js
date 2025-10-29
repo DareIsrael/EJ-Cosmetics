@@ -2,6 +2,8 @@
 import Link from 'next/link';
 import { useCart } from '@/contexts/CartContext';
 import toast from 'react-hot-toast';
+import Image from 'next/image';
+
 
 export default function ProductCard({ product }) {
   const { addToCart } = useCart();

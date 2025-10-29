@@ -86,6 +86,7 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { verifyAPI } from '@/services/api';
+import Link from 'next/link';
 
 export default function VerifyPayment() {
   const searchParams = useSearchParams();

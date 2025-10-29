@@ -3,6 +3,9 @@ import { useState, useEffect } from 'react';
 import { orderAPI } from '@/services/api';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import { useAuth } from '@/contexts/AuthContext';
+import Link from 'next/link';
+import Image from 'next/image';
+
 
 export default function UserDashboard() {
   const [orders, setOrders] = useState([]);
@@ -167,12 +170,12 @@ export default function UserDashboard() {
                   </div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-2">No orders yet</h3>
                   <p className="text-gray-600 mb-4">Start shopping to see your orders here</p>
-                  <a
+                  <Link
                     href="/"
                     className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-pink-600 hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500"
                   >
                     Start Shopping
-                  </a>
+                  </Link>
                 </div>
               )}
             </div>

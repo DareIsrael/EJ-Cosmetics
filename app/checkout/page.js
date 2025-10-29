@@ -676,6 +676,8 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 import { orderAPI } from '@/services/api';
 import toast from 'react-hot-toast';
+import Image from 'next/image';
+
 
 export default function Checkout() {
   const { cartItems, getSubtotal, getTotalAmount, getDeliveryFee } = useCart();

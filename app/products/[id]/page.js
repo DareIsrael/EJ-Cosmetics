@@ -4,6 +4,8 @@ import { useParams } from 'next/navigation';
 import { productAPI } from '@/services/api';
 import { useCart } from '@/contexts/CartContext';
 import toast from 'react-hot-toast';
+import Image from 'next/image';
+
 
 export default function ProductDetail() {
   const params = useParams();

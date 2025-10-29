@@ -2,6 +2,8 @@
 import { useState, useEffect } from 'react';
 import { orderAPI } from '@/services/api';
 import toast from 'react-hot-toast';
+import Image from 'next/image';
+
 
 export default function AdminOrders() {
   const [orders, setOrders] = useState([]);
