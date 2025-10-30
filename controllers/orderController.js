@@ -134,7 +134,7 @@ import Order from '@/models/Order';
 
 const PAYSTACK_SECRET_KEY = process.env.PAYSTACK_SECRET_KEY;
 const PAYSTACK_BASE_URL = 'https://api.paystack.co';
-const FRONTEND_URL = process.env.NEXT_PUBLIC_BASE_URL;
+const FRONTEND_URL = process.env.NEXT_PUBLIC_API_URL;
 
 /**
  * Get all orders (Admin or User)
