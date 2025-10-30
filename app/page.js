@@ -18,7 +18,7 @@
 //   const heroSlides = [
 //     {
 //       id: 1,
-//       image: '/images/hero-1.jpg', // Replace with your images
+//       image: '/images/hero-1.jpg',
 //       title: 'Premium Beauty Collection',
 //       subtitle: 'Discover Luxury Cosmetics'
 //     },
@@ -39,7 +39,6 @@
 //   useEffect(() => {
 //     fetchProducts();
     
-//     // Auto slide every 5 seconds
 //     const slideInterval = setInterval(() => {
 //       setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
 //     }, 5000);
@@ -109,25 +108,19 @@
 
 //   if (loading) {
 //     return (
-//       <div className="min-h-screen flex items-center justify-center bg-gray-50">
-//         <div className="text-center">
-//           <div className="animate-spin rounded-full h-12 w-12 border-4 border-pink-500 border-t-transparent mx-auto mb-4"></div>
-//           <p className="text-gray-600">Loading products...</p>
-//         </div>
+//       <div className="min-h-screen flex items-center justify-center">
+//         <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-pink-500"></div>
 //       </div>
 //     );
 //   }
 
 //   if (error) {
 //     return (
-//       <div className="min-h-screen flex items-center justify-center bg-gray-50">
-//         <div className="text-center">
-//           <p className="text-red-600 text-lg">{error}</p>
-//         </div>
+//       <div className="min-h-screen flex items-center justify-center">
+//         <div className="text-red-500 text-xl">{error}</div>
 //       </div>
 //     );
 //   }
-
 //   const featuredProducts = getFeaturedProducts();
 
 //   return (
@@ -141,7 +134,6 @@
 //               index === currentSlide ? 'opacity-100' : 'opacity-0'
 //             }`}
 //           >
-//             {/* Placeholder for slider images - replace with actual images */}
 //             <div className="w-full h-full bg-gradient-to-r from-pink-500 to-purple-600 flex items-center justify-center">
 //               <div className="text-center text-white">
 //                 <h1 className="text-4xl md:text-6xl font-bold mb-4">EJ Cosmetic</h1>
@@ -179,12 +171,12 @@
 //         </div>
 //       </section>
 
-//       {/* Search Section - Reduced Gap */}
-//       <section className="py-8 bg-white border-b"> {/* Reduced from py-12 */}
+//       {/* Rest of your existing component remains the same */}
+//       {/* Search Section */}
+//       <section className="py-8 bg-white border-b">
 //         <div className="container mx-auto px-4">
 //           <div className="max-w-4xl mx-auto">
-//             <div className="flex flex-col md:flex-row gap-3 items-center"> {/* Reduced gap */}
-//               {/* Search Bar */}
+//             <div className="flex flex-col md:flex-row gap-3 items-center">
 //               <div className="flex-1 w-full">
 //                 <div className="relative">
 //                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -202,7 +194,6 @@
 //                 </div>
 //               </div>
 
-//               {/* Category Filter */}
 //               <div className="w-full md:w-48">
 //                 <select
 //                   value={selectedCategory}
@@ -218,7 +209,6 @@
 //                 </select>
 //               </div>
 
-//               {/* Clear Filters */}
 //               {(searchTerm || selectedCategory !== 'all') && (
 //                 <button
 //                   onClick={clearFilters}
@@ -229,8 +219,7 @@
 //               )}
 //             </div>
 
-//             {/* Results Info */}
-//             <div className="text-center mt-3 text-sm text-gray-600"> {/* Reduced margin */}
+//             <div className="text-center mt-3 text-sm text-gray-600">
 //               <span>
 //                 {filteredProducts.length} of {products.length} products
 //                 {(searchTerm || selectedCategory !== 'all') && ' (filtered)'}
@@ -240,13 +229,13 @@
 //         </div>
 //       </section>
 
-//       {/* Featured Products - Reduced Gap */}
+//       {/* Featured Products */}
 //       {featuredProducts.length > 0 && (
-//         <section className="py-8 bg-white"> {/* Reduced from py-16 */}
+//         <section className="py-8 bg-white">
 //           <div className="container mx-auto px-4">
-//             <h2 className="text-2xl font-bold text-center mb-6">Featured Products</h2> {/* Reduced margin */}
-//             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3"> {/* More columns, smaller gap */}
-//               {featuredProducts.slice(0, 6).map((product) => ( // Show 6 featured products
+//             <h2 className="text-2xl font-bold text-center mb-6">Featured Products</h2>
+//             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
+//               {featuredProducts.slice(0, 6).map((product) => (
 //                 <ProductCard key={product._id} product={product} />
 //               ))}
 //             </div>
@@ -254,15 +243,15 @@
 //         </section>
 //       )}
 
-//       {/* All Products - Reduced Gap */}
-//       <section className="py-8 bg-gray-50"> {/* Reduced from py-16 */}
+//       {/* All Products */}
+//       <section className="py-8 bg-gray-50">
 //         <div className="container mx-auto px-4">
-//           <h2 className="text-2xl font-bold text-center mb-6"> {/* Reduced margin */}
+//           <h2 className="text-2xl font-bold text-center mb-6">
 //             {featuredProducts.length > 0 ? 'All Products' : 'Our Products'}
 //           </h2>
           
 //           {filteredProducts.length > 0 ? (
-//             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3"> {/* More columns, smaller gap */}
+//             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
 //               {filteredProducts.map((product) => (
 //                 <ProductCard key={product._id} product={product} />
 //               ))}
@@ -296,6 +285,7 @@
 //     </div>
 //   );
 // }
+
 
 
 'use client';
@@ -471,16 +461,17 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Rest of your existing component remains the same */}
-      {/* Search Section */}
-      <section className="py-8 bg-white border-b">
+      {/* Search Section - COMPACT */}
+      <section className="py-4 bg-white border-b"> {/* Reduced from py-8 to py-4 */}
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
-            <div className="flex flex-col md:flex-row gap-3 items-center">
+            {/* Compact search row */}
+            <div className="flex flex-col md:flex-row gap-2 items-center"> {/* Reduced gap from 3 to 2 */}
+              {/* Search Bar - Compact */}
               <div className="flex-1 w-full">
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"> {/* Smaller icon */}
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                     </svg>
                   </div>
@@ -489,16 +480,17 @@ export default function Home() {
                     placeholder="Search products..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-pink-500"
+                    className="w-full pl-9 pr-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-pink-500 focus:border-pink-500" // Reduced padding and smaller text
                   />
                 </div>
               </div>
 
-              <div className="w-full md:w-48">
+              {/* Category Filter - Compact */}
+              <div className="w-full md:w-40"> {/* Slightly narrower */}
                 <select
                   value={selectedCategory}
                   onChange={(e) => setSelectedCategory(e.target.value)}
-                  className="w-full px-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-pink-500"
+                  className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-pink-500 focus:border-pink-500" // Reduced padding and smaller text
                 >
                   <option value="all">All Categories</option>
                   {categories.map((category) => (
@@ -509,17 +501,19 @@ export default function Home() {
                 </select>
               </div>
 
+              {/* Clear Filters - Compact */}
               {(searchTerm || selectedCategory !== 'all') && (
                 <button
                   onClick={clearFilters}
-                  className="px-4 py-3 text-gray-600 hover:text-gray-800 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors whitespace-nowrap"
+                  className="px-3 py-2 text-xs text-gray-600 hover:text-gray-800 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors whitespace-nowrap" // Reduced padding and smaller text
                 >
                   Clear
                 </button>
               )}
             </div>
 
-            <div className="text-center mt-3 text-sm text-gray-600">
+            {/* Results Info - Compact */}
+            <div className="text-center mt-2 text-xs text-gray-600"> {/* Reduced margin and smaller text */}
               <span>
                 {filteredProducts.length} of {products.length} products
                 {(searchTerm || selectedCategory !== 'all') && ' (filtered)'}
@@ -529,12 +523,12 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Featured Products */}
+      {/* Featured Products - Reduced Gap */}
       {featuredProducts.length > 0 && (
-        <section className="py-8 bg-white">
+        <section className="py-6 bg-white"> {/* Reduced from py-8 to py-6 */}
           <div className="container mx-auto px-4">
-            <h2 className="text-2xl font-bold text-center mb-6">Featured Products</h2>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
+            <h2 className="text-xl font-bold text-center mb-4">Featured Products</h2> {/* Smaller text and margin */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2"> {/* Reduced gap from 3 to 2 */}
               {featuredProducts.slice(0, 6).map((product) => (
                 <ProductCard key={product._id} product={product} />
               ))}
@@ -543,28 +537,28 @@ export default function Home() {
         </section>
       )}
 
-      {/* All Products */}
-      <section className="py-8 bg-gray-50">
+      {/* All Products - Reduced Gap */}
+      <section className="py-6 bg-gray-50"> {/* Reduced from py-8 to py-6 */}
         <div className="container mx-auto px-4">
-          <h2 className="text-2xl font-bold text-center mb-6">
+          <h2 className="text-xl font-bold text-center mb-4"> {/* Smaller text and margin */}
             {featuredProducts.length > 0 ? 'All Products' : 'Our Products'}
           </h2>
           
           {filteredProducts.length > 0 ? (
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2"> {/* Reduced gap from 3 to 2 */}
               {filteredProducts.map((product) => (
                 <ProductCard key={product._id} product={product} />
               ))}
             </div>
           ) : (
-            <div className="text-center py-12">
-              <div className="text-gray-400 mb-4">
-                <svg className="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="text-center py-8"> {/* Reduced padding */}
+              <div className="text-gray-400 mb-3"> {/* Reduced margin */}
+                <svg className="w-12 h-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"> {/* Smaller icon */}
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
                 </svg>
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">No Products Found</h3>
-              <p className="text-gray-600 mb-6">
+              <h3 className="text-base font-semibold text-gray-900 mb-2">No Products Found</h3> {/* Smaller text */}
+              <p className="text-gray-600 mb-4 text-sm"> {/* Smaller text */}
                 {products.length === 0 
                   ? "No products available at the moment."
                   : "No products match your search criteria."
@@ -573,7 +567,7 @@ export default function Home() {
               {products.length > 0 && (
                 <button
                   onClick={clearFilters}
-                  className="bg-pink-600 text-white px-6 py-3 rounded-lg hover:bg-pink-700 transition-colors"
+                  className="bg-pink-600 text-white px-4 py-2 rounded-lg hover:bg-pink-700 transition-colors text-sm" // Smaller button
                 >
                   Clear Filters
                 </button>
