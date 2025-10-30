@@ -8,6 +8,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import Link from 'next/link';
 import Image from 'next/image';
 
+export const dynamic = 'force-dynamic';
 
 export default function UserDashboard() {
   const [orders, setOrders] = useState([]);

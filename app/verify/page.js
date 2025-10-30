@@ -88,6 +88,8 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import { verifyAPI } from '@/services/api';
 import Link from 'next/link';
 
+export const dynamic = 'force-dynamic';
+
 export default function VerifyPayment() {
   const searchParams = useSearchParams();
   const router = useRouter();

@@ -133,6 +133,9 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useCart } from '@/contexts/CartContext';
 
+// Add this line at the top of the file
+export const dynamic = 'force-dynamic';
+
 export default function PaymentSuccess() {
   const searchParams = useSearchParams();
   const router = useRouter();
