@@ -157,6 +157,7 @@
 
 
 // app/verify/page.js
+
 'use client';
 import { Suspense } from 'react';
 import VerifyContent from './VerifyContent';
