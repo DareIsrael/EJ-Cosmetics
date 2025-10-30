@@ -12,7 +12,7 @@ export default function ProductCard({ product }) {
     e.preventDefault();
     e.stopPropagation();
     addToCart(product);
-    toast.success('Product added to cart!');
+    // toast.success('Product added to cart!');
   };
 
   return (

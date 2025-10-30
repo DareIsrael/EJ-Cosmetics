@@ -21,7 +21,7 @@ export default function SuccessContent() {
     } else {
       setLoading(false);
     }
-  }, [orderId, clearCart]);
+  }, [orderId]);
 
   const fetchOrderDetails = async () => {
     try {

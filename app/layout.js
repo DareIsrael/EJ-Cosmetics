@@ -3,6 +3,7 @@ import "./globals.css";
 import { AuthProvider } from '@/contexts/AuthContext';
 import { CartProvider } from '@/contexts/CartContext';
 import { Toaster } from 'react-hot-toast';
+import CustomToast from '@/components/CustomToast';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 
@@ -31,8 +32,9 @@ export default function RootLayout({ children }) {
           <CartProvider>
             <Navbar />
             <main className="min-h-screen pt-16">{children}</main>
+            <CustomToast />
             <Footer />
-            <Toaster 
+            {/* <Toaster 
               position="top-right"
               toastOptions={{
                 duration: 3000,
@@ -48,7 +50,7 @@ export default function RootLayout({ children }) {
                   },
                 },
               }}
-            />
+            /> */}
           </CartProvider>
         </AuthProvider>
       </body>
