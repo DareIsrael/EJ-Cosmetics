@@ -86,12 +86,12 @@ export default function SuccessContent() {
             </div>
           )}
 
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-8">
+          {/* <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-8">
             <p className="text-blue-800 text-sm">
               <strong>What's next?</strong> You'll receive an email confirmation shortly. 
               We'll notify you when your order ships.
             </p>
-          </div>
+          </div> */}
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link

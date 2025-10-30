@@ -201,13 +201,13 @@ export default function ProductCard({ product }) {
 
       <div className="p-1.5 sm:p-2 flex flex-col flex-grow justify-between">
         <Link href={`/products/${product._id}`}>
-          <h3 className="text-[15px] sm:text-xs font-medium leading-tight text-gray-700 line-clamp-2 hover:text-pink-600 transition-colors mb-0.5">
+          <h3 className="text-[15px]  sm:text-xs  leading-tight  line-clamp-2 hover:text-pink-600 text-gray-900 font-light transition-colors mb-0.5">
             {product.name}
           </h3>
         </Link>
 
         <div className="flex items-center justify-between mb-1">
-          <span className="text-[12px] sm:text-xs font-bold text-pink-600">
+          <span className="text-[14px] sm:text-xs font-light text-pink-600">
             ₦{product.price?.toLocaleString() || '0'}
           </span>
           <span className="text-[9px] text-gray-500">

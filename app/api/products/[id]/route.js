@@ -2,9 +2,14 @@ import { NextResponse } from 'next/server';
 import { authenticate } from '@/utils/auth';
 import { getProductById, updateProduct, deleteProduct } from '@/controllers/productController';
 
+// export async function GET(request, { params }) {
+//   try {
+//     const result = await getProductById(params.id);
+
 export async function GET(request, { params }) {
   try {
-    const result = await getProductById(params.id);
+    const { id } = await params; // ✅ await params first
+    const result = await getProductById(id);
 
     if (!result.success) {
       return NextResponse.json(
