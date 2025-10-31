@@ -119,7 +119,7 @@ export default function DeliveryInfo() {
               </ul>
             </section>
 
-            <section>
+            {/* <section>
               <h2 className="text-xl font-semibold mb-4">Areas We Cover in Ilorin</h2>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                 <div className="flex items-center space-x-2">
@@ -162,7 +162,7 @@ export default function DeliveryInfo() {
               <p className="text-gray-600 mt-4 text-sm">
                 Don't see your area? Contact us to confirm delivery availability!
               </p>
-            </section>
+            </section> */}
 
             <section>
               <h2 className="text-xl font-semibold mb-4">Delivery Support</h2>

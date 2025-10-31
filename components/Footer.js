@@ -65,8 +65,8 @@ export default function Footer() {
             <h3 className="text-lg font-semibold mb-4">Customer Service</h3>
             <ul className="space-y-2">
               <li>
-                <Link href="/shipping" className="text-gray-300 hover:text-white transition-colors">
-                  Shipping Info
+                <Link href="/delivery" className="text-gray-300 hover:text-white transition-colors">
+                  Delivery Info
                 </Link>
               </li>
               <li>

@@ -597,7 +597,6 @@ export default function Home() {
   const [categories, setCategories] = useState([]);
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  // Updated Hero Slider with cosmetic models and pink backgrounds
   const heroSlides = [
     {
       id: 1,
@@ -606,7 +605,6 @@ export default function Home() {
       subtitle: 'Premium Cosmetics Collection',
       description: 'Enhance your natural beauty with our carefully curated luxury products',
       cta: 'Shop Now',
-      bgGradient: 'from-pink-300 to-pink-500'
     },
     {
       id: 2,
@@ -615,7 +613,6 @@ export default function Home() {
       subtitle: 'Up to 50% Off',
       description: 'Get ready for summer with our special offers on skincare and makeup',
       cta: 'View Deals',
-      bgGradient: 'from-pink-300 to-rose-500'
     },
     {
       id: 3,
@@ -624,7 +621,6 @@ export default function Home() {
       subtitle: 'Fresh & Trending',
       description: 'Explore the latest beauty trends and innovative products',
       cta: 'Discover',
-      bgGradient: 'from-rose-300 to-pink-500'
     }
   ];
 
@@ -718,8 +714,8 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Fixed Hero Slider Section - Mobile Responsive */}
-      <section className="relative h-64 md:h-80 lg:h-[450px] xl:h-[700px] bg-gray-900 overflow-hidden">
+      {/* Simple Hero Slider - Text always on left */}
+      <section className="relative h-64 md:h-80 lg:h-[450px] xl:h-[600px] bg-gray-900 overflow-hidden">
         {heroSlides.map((slide, index) => (
           <div
             key={slide.id}
@@ -727,25 +723,20 @@ export default function Home() {
               index === currentSlide ? 'opacity-100' : 'opacity-0'
             }`}
           >
-            {/* Main container with background image */}
+            {/* Container with background image */}
             <div 
-              className="w-full h-full flex flex-col md:flex-row relative"
+              className="w-full h-full relative"
               style={{
                 backgroundImage: `url(${slide.image})`,
                 backgroundSize: 'cover',
-                // backgroundPosition: 'center',
-                backgroundPosition: '60% 30%',
+                backgroundPosition: 'center',
                 backgroundRepeat: 'no-repeat'
               }}
             >
-              {/* Gradient overlay for better text readability */}
-              <div className={`absolute inset-0 bg-gradient-to-r ${slide.bgGradient} opacity-80 md:opacity-70`}></div>
-              
-              {/* Content container - Stack on mobile, side by side on desktop */}
-              <div className="relative z-10 w-full h-full flex flex-col md:flex-row">
-                {/* Text Content - Full width on mobile, left side on desktop */}
-                <div className="w-full md:w-1/2 lg:w-2/5 flex items-center justify-center md:justify-start p-4 md:pl-8 lg:pl-12">
-                  <div className="text-white max-w-md text-center md:text-left">
+              {/* Text Content - Always on left side */}
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full md:w-1/2 lg:w-2/5 flex items-center justify-start p-4 md:pl-8 lg:pl-12">
+                  <div className="text-white max-w-md">
                     <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 md:mb-4 leading-tight">
                       {slide.title}
                     </h1>
@@ -760,18 +751,12 @@ export default function Home() {
                     </button>
                   </div>
                 </div>
-
-                {/* Right side - Hidden on mobile, visible on desktop */}
-                <div className="hidden md:block w-1/2 lg:w-3/5 relative">
-                  {/* Additional gradient overlay for the right side */}
-                  <div className="absolute inset-0 bg-gradient-to-l from-transparent to-pink-500/30"></div>
-                </div>
               </div>
             </div>
           </div>
         ))}
         
-        {/* Slider Controls - Smaller on mobile */}
+        {/* Slider Controls */}
         <button
           onClick={prevSlide}
           className="absolute left-2 md:left-4 top-1/2 transform -translate-y-1/2 bg-white/30 hover:bg-white/40 text-white p-2 md:p-3 rounded-full transition-all z-20 shadow-lg"
@@ -787,11 +772,11 @@ export default function Home() {
           aria-label="Next slide"
         >
           <svg className="w-4 h-4 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7-7-7" />
           </svg>
         </button>
         
-        {/* Slider Indicators - Smaller on mobile */}
+        {/* Slider Indicators */}
         <div className="absolute bottom-3 md:bottom-6 left-1/2 transform -translate-x-1/2 flex space-x-2 md:space-x-3 z-20">
           {heroSlides.map((_, index) => (
             <button
@@ -805,7 +790,7 @@ export default function Home() {
           ))}
         </div>
 
-        {/* Brand Logo - Smaller on mobile */}
+        {/* Brand Logo */}
         <div className="absolute top-3 md:top-6 left-3 md:left-8 z-20">
           <div className="flex items-center space-x-2 md:space-x-3">
             <div className="w-8 h-8 md:w-10 md:h-10 bg-white rounded-full flex items-center justify-center shadow-lg">
@@ -816,13 +801,11 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Search Section - COMPACT */}
+      {/* Rest of your code remains exactly the same */}
       <section className="py-4 bg-white border-b">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
-            {/* Compact search row */}
             <div className="flex flex-col md:flex-row gap-2 items-center">
-              {/* Search Bar - Compact */}
               <div className="flex-1 w-full">
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -840,7 +823,6 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Category Filter - Compact */}
               <div className="w-full md:w-40">
                 <select
                   value={selectedCategory}
@@ -856,7 +838,6 @@ export default function Home() {
                 </select>
               </div>
 
-              {/* Clear Filters - Compact */}
               {(searchTerm || selectedCategory !== 'all') && (
                 <button
                   onClick={clearFilters}
@@ -867,7 +848,6 @@ export default function Home() {
               )}
             </div>
 
-            {/* Results Info - Compact */}
             <div className="text-center mt-2 text-xs text-gray-600">
               <span>
                 {filteredProducts.length} of {products.length} products
@@ -878,14 +858,12 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Featured Products - Reduced Gap */}
       {featuredProducts.length > 0 && (
         <section className="py-6 bg-white">
           <div className="container mx-auto px-4">
-
-          <h2 className="text-1xl text-center mb-4 text-gray-900 font-light tracking-widest uppercase border-b-2 border-pink-400 pb-2 inline-block">
-  Featured Products
-</h2>
+            <h2 className="text-1xl text-center mb-4 text-gray-900 font-light tracking-widest uppercase border-b-2 border-pink-400 pb-2 inline-block">
+              Featured Products
+            </h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2">
               {featuredProducts.slice(0, 6).map((product) => (
                 <ProductCard key={product._id} product={product} />
@@ -895,7 +873,6 @@ export default function Home() {
         </section>
       )}
 
-      {/* All Products - Reduced Gap */}
       <section className="py-6 bg-gray-50">
         <div className="container mx-auto px-4">
           <h2 className="text-1xl text-center mb-4 text-gray-900 font-light tracking-widest uppercase border-b-2 border-pink-400 pb-2 inline-block">

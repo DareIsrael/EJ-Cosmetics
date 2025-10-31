@@ -163,7 +163,7 @@ export default function Cart() {
       <div className="min-h-screen bg-gray-50 py-8">
         <div className="container mx-auto px-4">
           <div className="text-center">
-            <h1 className="text-3xl font-bold mb-4">Your Cart</h1>
+            <h1 className="text-3xl font-light tracking-widest  mb-4">Your Cart</h1>
             <p className="text-gray-600 mb-8">Your cart is empty</p>
             <Link
               href="/"
@@ -180,7 +180,7 @@ export default function Cart() {
   return (
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="container mx-auto px-4">
-        <h1 className="text-3xl font-bold mb-8">Your Cart</h1>
+        <h1 className="text-3xl font-light tracking-widest mb-8">Your Cart</h1>
         
         <div className="bg-white rounded-lg shadow-md overflow-hidden">
           {cartItems.map((item) => (
@@ -193,7 +193,7 @@ export default function Cart() {
                 />
                 
                 <div className="ml-6 flex-1">
-                  <h3 className="text-lg font-semibold">{item.name}</h3>
+                  <h3 className="text-lg font-light">{item.name}</h3>
                   <p className="text-pink-600 font-bold">₦{item.price.toLocaleString()}</p>
                   {item.stock < 10 && (
                     <p className="text-xs text-orange-600 mt-1">
