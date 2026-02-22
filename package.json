@@ -16,12 +16,12 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.19.2",
     "multer": "^2.0.2",
-    "next": "^15.5.6",
+    "next": "^16.1.6",
     "nodemailer": "^7.0.10",
     "paystack": "^2.0.1",
     "postcss": "^8.5.6",
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
     "react-hot-toast": "^2.6.0"
   },
   "devDependencies": {

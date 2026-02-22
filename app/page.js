@@ -610,7 +610,7 @@ export default function Home() {
       id: 2,
       image: '/images/slide2.png',
       title: 'Summer Glow',
-      subtitle: 'Up to 60% Off',
+      subtitle: 'Up to 70% Off',
       description: 'Get ready for summer with our special offers on skincare and makeup',
       cta: 'View Deals',
     },
