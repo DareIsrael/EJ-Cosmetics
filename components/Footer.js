@@ -9,7 +9,7 @@ export default function Footer() {
           <div className="col-span-1 md:col-span-2">
             <Link href="/" className="flex items-center space-x-2 mb-4">
               <div className="w-8 h-8 bg-gradient-to-r from-pink-500 to-purple-600 rounded-full"></div>
-              <span className="text-xl font-bold">EJ Cosmetic</span>
+              <span className="text-xl font-bold">AJ Cosmetic</span>
             </Link>
             <p className="text-gray-300 mb-4">
               Your one-stop destination for premium beauty products. Discover your beauty, enhance your style with our carefully curated collection.
@@ -90,7 +90,7 @@ export default function Footer() {
 
         <div className="border-t border-gray-700 mt-8 pt-8 text-center">
           <p className="text-gray-300">
-            &copy; {new Date().getFullYear()} EJ Cosmetic. All rights reserved.
+            &copy; {new Date().getFullYear()} AJ Cosmetic. All rights reserved.
           </p>
         </div>
       </div>

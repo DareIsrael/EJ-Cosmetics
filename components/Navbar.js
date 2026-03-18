@@ -212,7 +212,7 @@ export default function Navbar() {
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2">
             <div className="w-8 h-8 bg-gradient-to-r from-pink-500 to-purple-600 rounded-full"></div>
-            <span className="text-xl font-bold text-pink-600">EJ Cosmetic</span>
+            <span className="text-xl font-bold text-pink-600">AJ Cosmetic</span>
           </Link>
 
           {/* Desktop Navigation */}

@@ -794,9 +794,9 @@ export default function Home() {
         <div className="absolute top-3 md:top-6 left-3 md:left-8 z-20">
           <div className="flex items-center space-x-2 md:space-x-3">
             <div className="w-8 h-8 md:w-10 md:h-10 bg-white rounded-full flex items-center justify-center shadow-lg">
-              <span className="text-pink-600 font-bold text-sm md:text-lg">EJ</span>
+              <span className="text-pink-600 font-bold text-sm md:text-lg">AJ</span>
             </div>
-            <span className="text-white font-bold text-lg md:text-xl hidden sm:block">EJ Cosmetic</span>
+            <span className="text-white font-bold text-lg md:text-xl hidden sm:block">AJ Cosmetic</span>
           </div>
         </div>
       </section>

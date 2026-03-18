@@ -18,7 +18,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "EJ Cosmetic - Premium Beauty Products",
+  title: "AJ Cosmetic - Premium Beauty Products",
   description: "Your one-stop shop for premium cosmetic products",
 };
 

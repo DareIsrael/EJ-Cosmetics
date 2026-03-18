@@ -7,7 +7,7 @@ export default function AboutPage() {
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">About EJ Cosmetic</h1>
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">About AJ Cosmetic</h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
             Your trusted partner in beauty and cosmetics since 2020
           </p>
@@ -19,7 +19,7 @@ export default function AboutPage() {
             <div>
               <h2 className="text-3xl font-bold text-gray-900 mb-4">Our Story</h2>
               <p className="text-gray-600 mb-4">
-                EJ Cosmetic was born from a passion for helping people discover their unique beauty. 
+                AJ Cosmetic was born from a passion for helping people discover their unique beauty. 
                 What started as a small local store has grown into a trusted online destination for 
                 premium beauty products.
               </p>

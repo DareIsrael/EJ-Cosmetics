@@ -12,7 +12,7 @@ export default function TermsOfService() {
             <section>
               <h2 className="text-xl font-semibold mb-4">1. Acceptance of Terms</h2>
               <p className="text-gray-600">
-                By accessing and using EJ Cosmetic's website and services, you agree to be bound 
+                By accessing and using AJ Cosmetic's website and services, you agree to be bound 
                 by these Terms of Service and all applicable laws and regulations. If you do not 
                 agree with any of these terms, you are prohibited from using our services.
               </p>
@@ -77,7 +77,7 @@ export default function TermsOfService() {
               <h2 className="text-xl font-semibold mb-4">7. Intellectual Property</h2>
               <p className="text-gray-600">
                 All content on this website, including text, graphics, logos, and images, 
-                is the property of EJ Cosmetic and protected by copyright laws. You may not 
+                is the property of AJ Cosmetic and protected by copyright laws. You may not 
                 use, reproduce, or distribute any content without our written permission.
               </p>
             </section>
@@ -85,7 +85,7 @@ export default function TermsOfService() {
             <section>
               <h2 className="text-xl font-semibold mb-4">8. Limitation of Liability</h2>
               <p className="text-gray-600">
-                EJ Cosmetic shall not be liable for any indirect, incidental, special, 
+                AJ Cosmetic shall not be liable for any indirect, incidental, special, 
                 or consequential damages resulting from your use of our services or products. 
                 Our total liability shall not exceed the amount paid for the products in question.
               </p>
