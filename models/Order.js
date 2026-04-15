@@ -5,6 +5,7 @@ const orderSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true,
+    index: true,
   },
   items: [{
     productId: {
@@ -15,12 +16,19 @@ const orderSchema = new mongoose.Schema({
     quantity: {
       type: Number,
       required: true,
+      min: 1,
     },
     price: {
       type: Number,
       required: true,
+      min: 0,
     },
   }],
+  subtotal: {
+    type: Number,
+    required: true,
+    default: 0,
+  },
   deliveryFee: {
       type: Number,
       required: true,
@@ -38,10 +46,6 @@ const orderSchema = new mongoose.Schema({
     country: String,
     phone: String,
   },
-  status: 
-  { type: String,
-    default: 'pending' },
-    
   paymentStatus: {
     type: String,
     enum: ['pending', 'completed', 'failed'],
@@ -55,6 +59,9 @@ const orderSchema = new mongoose.Schema({
   paymentReference: {
     type: String,
     required: false,
+  },
+  paidAt: {
+    type: Date,
   },
 }, {
   timestamps: true,

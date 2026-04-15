@@ -2,7 +2,6 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
-import { useRouter } from 'next/navigation';
 
 export default function Login() {
   const [formData, setFormData] = useState({
@@ -11,7 +10,6 @@ export default function Login() {
   });
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
-  const router = useRouter();
 
   const handleChange = (e) => {
     setFormData({
@@ -25,10 +23,7 @@ export default function Login() {
     setLoading(true);
 
     try {
-      const result = await login(formData.email, formData.password);
-      if (result.success) {
-        // Navigation is handled in the auth context
-      }
+      await login(formData.email, formData.password);
     } catch (error) {
       console.error('Login error:', error);
     } finally {
@@ -53,9 +48,7 @@ export default function Login() {
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="rounded-md shadow-sm -space-y-px">
             <div>
-              <label htmlFor="email" className="sr-only">
-                Email address
-              </label>
+              <label htmlFor="email" className="sr-only">Email address</label>
               <input
                 id="email"
                 name="email"
@@ -69,9 +62,7 @@ export default function Login() {
               />
             </div>
             <div>
-              <label htmlFor="password" className="sr-only">
-                Password
-              </label>
+              <label htmlFor="password" className="sr-only">Password</label>
               <input
                 id="password"
                 name="password"
@@ -97,10 +88,10 @@ export default function Login() {
           </div>
         </form>
         <div className="text-center">
-  <Link href="/forgot-password" className="font-medium text-pink-600 hover:text-pink-500">
-    Forgot your password?
-  </Link>
-</div>
+          <Link href="/forgot-password" className="font-medium text-pink-600 hover:text-pink-500">
+            Forgot your password?
+          </Link>
+        </div>
       </div>
     </div>
   );

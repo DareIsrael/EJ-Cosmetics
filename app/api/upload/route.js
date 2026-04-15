@@ -4,8 +4,9 @@ import cloudinary from '@/lib/cloudinary';
 
 export async function POST(request) {
   try {
-    const user = await authenticate(request);
-    if (!user || user.role !== 'admin') {
+    // Admin-only: revalidate role from DB
+    const user = await authenticate(request, { requireAdmin: true });
+    if (!user) {
       return NextResponse.json(
         { message: 'Unauthorized' },
         { status: 401 }

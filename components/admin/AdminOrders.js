@@ -3,21 +3,35 @@ import { useState, useEffect } from 'react';
 import { orderAPI } from '@/services/api';
 import toast from 'react-hot-toast';
 import Image from 'next/image';
-
+import Pagination from '@/components/Pagination';
 
 export default function AdminOrders() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedOrder, setSelectedOrder] = useState(null);
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalItems, setTotalItems] = useState(0);
+
   useEffect(() => {
     fetchOrders();
-  }, []);
+  }, [currentPage]);
 
   const fetchOrders = async () => {
     try {
-      const response = await orderAPI.getAll();
-      setOrders(response.data);
+      setLoading(true);
+      const limit = 10;
+      const response = await orderAPI.getAll({ page: currentPage, limit });
+      const payload = response.data;
+      
+      if (payload && payload.data) {
+        setOrders(payload.data);
+        setTotalPages(payload.totalPages);
+        setTotalItems(payload.totalItems);
+      } else {
+        setOrders(payload || []);
+      }
     } catch (error) {
       toast.error('Failed to fetch orders');
     } finally {
@@ -82,7 +96,7 @@ export default function AdminOrders() {
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold text-gray-900">Orders Management</h2>
         <div className="text-sm text-gray-600">
-          Total: {orders.length} orders
+          Total: {totalItems} orders
         </div>
       </div>
 
@@ -170,6 +184,15 @@ export default function AdminOrders() {
           </div>
         )}
       </div>
+
+      {/* Pagination Controls */}
+      {totalPages > 1 && (
+        <Pagination 
+          currentPage={currentPage} 
+          totalPages={totalPages} 
+          onPageChange={setCurrentPage} 
+        />
+      )}
 
       {/* Order Details Modal */}
       {selectedOrder && (

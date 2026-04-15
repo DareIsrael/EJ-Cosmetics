@@ -91,7 +91,6 @@ export async function getCurrentUser(token) {
   try {
     await dbConnect();
     
-    const { verifyToken } = await import('@/utils/jwt');
     const decoded = verifyToken(token);
 
     if (!decoded) {

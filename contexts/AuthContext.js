@@ -1,211 +1,108 @@
-// 'use client';
-// import { createContext, useState, useContext, useEffect } from 'react';
-// import { useRouter } from 'next/navigation';
-// import { authAPI } from '@/services/api';
-// import toast from 'react-hot-toast';
-
-// const AuthContext = createContext();
-
-// export function AuthProvider({ children }) {
-//   const [user, setUser] = useState(null);
-//   const [loading, setLoading] = useState(true);
-//   const router = useRouter();
-
-//   useEffect(() => {
-//     checkUser();
-//   }, []);
-
-//   const checkUser = async () => {
-//     try {
-//       const token = localStorage.getItem('token');
-//       if (token) {
-//         const response = await authAPI.getMe();
-//         setUser(response.data);
-//       }
-//     } catch (error) {
-//       console.error('Auth check failed:', error);
-//       localStorage.removeItem('token');
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   const login = async (email, password) => {
-//     try {
-//       const response = await authAPI.login({ email, password });
-//       const { user: userData, token } = response.data;
-
-//       localStorage.setItem('token', token);
-//       setUser(userData);
-//       toast.success('Login successful!');
-      
-//       // Redirect based on role
-//       if (userData.role === 'admin') {
-//         router.push('/admin');
-//       } else {
-//         router.push('/');
-//       }
-      
-//       return { success: true };
-//     } catch (error) {
-//       const message = error.response?.data?.message || 'Login failed';
-//       toast.error(message);
-//       return { success: false, message };
-//     }
-//   };
-
-//   const register = async (name, email, password) => {
-//     try {
-//       const response = await authAPI.register({ name, email, password });
-//       const { user: userData, token } = response.data;
-
-//       localStorage.setItem('token', token);
-//       setUser(userData);
-//       toast.success('Registration successful!');
-//       router.push('/');
-      
-//       return { success: true };
-//     } catch (error) {
-//       const message = error.response?.data?.message || 'Registration failed';
-//       toast.error(message);
-//       return { success: false, message };
-//     }
-//   };
-
-//   const logout = () => {
-//     localStorage.removeItem('token');
-//     setUser(null);
-//     router.push('/');
-//     toast.success('Logged out successfully!');
-//   };
-
-//   return (
-//     <AuthContext.Provider value={{ 
-//       user, 
-//       login, 
-//       register, 
-//       logout, 
-//       loading,
-//       isAdmin: user?.role === 'admin'
-//     }}>
-//       {children}
-//     </AuthContext.Provider>
-//   );
-// }
-
-// export const useAuth = () => useContext(AuthContext);
-
-
-
 'use client';
-import { createContext, useState, useContext, useEffect } from 'react';
+import { createContext, useContext } from 'react';
+import { useSession, signIn, signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { authAPI } from '@/services/api';
 import toast from 'react-hot-toast';
 
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const { data: session, status } = useSession();
   const router = useRouter();
-
-  useEffect(() => {
-    checkUser();
-  }, []);
-
-  const checkUser = async () => {
-  try {
-    const token = localStorage.getItem('token');
-    const storedUser = localStorage.getItem('user');
-
-    if (storedUser) {
-      setUser(JSON.parse(storedUser)); // restore immediately for instant UI
-    }
-
-    if (token) {
-      // Optionally verify token with backend
-      const response = await authAPI.getMe();
-      if (response.data) {
-        setUser(response.data);
-        localStorage.setItem('user', JSON.stringify(response.data)); // keep updated
-      }
-    } else {
-      setUser(null);
-    }
-  } catch (error) {
-    console.error('Auth check failed:', error);
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    setUser(null);
-  } finally {
-    setLoading(false);
-  }
-};
-
+  const loading = status === 'loading';
+  const user = session?.user || null;
 
   const login = async (email, password) => {
-  try {
-    const response = await authAPI.login({ email, password });
-    const { user: userData, token } = response.data;
+    try {
+      const result = await signIn('credentials', {
+        email,
+        password,
+        redirect: false,
+      });
 
-    localStorage.setItem('token', token);
-    localStorage.setItem('user', JSON.stringify(userData)); // ✅ Add this line
-    setUser(userData);
-    toast.success('Login successful!');
+      if (result?.error) {
+        toast.error(result.error || 'Login failed');
+        return { success: false, message: result.error };
+      }
 
-    // Redirect based on role
-    if (userData.role === 'admin') {
-      router.push('/admin');
-    } else {
-      router.push('/');
+      toast.success('Login successful!');
+
+      // Redirect based on role — session may not be immediately updated,
+      // so we fetch the session to get the role
+      const sessionRes = await fetch('/api/auth/session');
+      const sessionData = await sessionRes.json();
+
+      if (sessionData?.user?.role === 'admin') {
+        router.push('/admin');
+      } else {
+        router.push('/');
+      }
+
+      return { success: true };
+    } catch (error) {
+      const message = error.message || 'Login failed';
+      toast.error(message);
+      return { success: false, message };
     }
+  };
 
-    return { success: true };
-  } catch (error) {
-    const message = error.response?.data?.message || 'Login failed';
-    toast.error(message);
-    return { success: false, message };
-  }
-};
+  const register = async (name, email, password) => {
+    try {
+      // Step 1: Create the user via the existing register API
+      const response = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, password }),
+      });
 
-const register = async (name, email, password) => {
-  try {
-    const response = await authAPI.register({ name, email, password });
-    const { user: userData, token } = response.data;
+      const data = await response.json();
 
-    localStorage.setItem('token', token);
-    localStorage.setItem('user', JSON.stringify(userData)); // ✅ Add this line too
-    setUser(userData);
-    toast.success('Registration successful!');
+      if (!response.ok) {
+        const message = data.message || 'Registration failed';
+        toast.error(message);
+        return { success: false, message };
+      }
+
+      // Step 2: Auto sign-in with NextAuth after registration
+      const signInResult = await signIn('credentials', {
+        email,
+        password,
+        redirect: false,
+      });
+
+      if (signInResult?.error) {
+        toast.error('Account created but auto-login failed. Please log in.');
+        router.push('/login');
+        return { success: true };
+      }
+
+      toast.success('Registration successful!');
+      router.push('/');
+      return { success: true };
+    } catch (error) {
+      const message = error.message || 'Registration failed';
+      toast.error(message);
+      return { success: false, message };
+    }
+  };
+
+  const logout = async () => {
+    await signOut({ redirect: false });
     router.push('/');
-
-    return { success: true };
-  } catch (error) {
-    const message = error.response?.data?.message || 'Registration failed';
-    toast.error(message);
-    return { success: false, message };
-  }
-};
-
-
-  const logout = () => {
-  localStorage.removeItem('token');
-  localStorage.removeItem('user');
-  setUser(null);
-  router.push('/');
-  toast.success('Logged out successfully!');
-};
+    toast.success('Logged out successfully!');
+  };
 
   return (
-    <AuthContext.Provider value={{ 
-      user, 
-      login, 
-      register, 
-      logout, 
-      loading,
-      isAdmin: user?.role === 'admin'
-    }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        login,
+        register,
+        logout,
+        loading,
+        isAdmin: user?.role === 'admin',
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

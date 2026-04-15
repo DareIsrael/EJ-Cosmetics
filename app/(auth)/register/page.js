@@ -21,7 +21,6 @@ export default function Register() {
       ...formData,
       [e.target.name]: e.target.value,
     });
-    // Clear errors when user starts typing
     if (errors[e.target.name]) {
       setErrors({
         ...errors,

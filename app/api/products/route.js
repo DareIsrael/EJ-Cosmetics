@@ -2,9 +2,16 @@ import { NextResponse } from 'next/server';
 import { authenticate } from '@/utils/auth';
 import { getAllProducts, createProduct } from '@/controllers/productController';
 
-export async function GET() {
+export async function GET(request) {
   try {
-    const result = await getAllProducts();
+    const { searchParams } = new URL(request.url);
+    const page = searchParams.get('page') || 1;
+    const limit = searchParams.get('limit') || 0;
+    const search = searchParams.get('search') || '';
+    const category = searchParams.get('category') || 'all';
+    const sort = searchParams.get('sort') || 'name';
+
+    const result = await getAllProducts({ page, limit, search, category, sort });
 
     if (!result.success) {
       return NextResponse.json(
@@ -25,7 +32,8 @@ export async function GET() {
 
 export async function POST(request) {
   try {
-    const user = await authenticate(request);
+    // Admin-only: revalidate role from DB
+    const user = await authenticate(request, { requireAdmin: true });
     if (!user) {
       return NextResponse.json(
         { message: 'Unauthorized' },

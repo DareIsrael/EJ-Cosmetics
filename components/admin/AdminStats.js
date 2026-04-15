@@ -10,18 +10,8 @@ export default function AdminStats({ stats, loading }) {
     // Fetch recent orders for the dashboard
     const fetchRecentOrders = async () => {
       try {
-        const token = localStorage.getItem('token');
-        if (!token) {
-          console.error('No authentication token found');
-          setRecentOrders([]);
-          return;
-        }
-
         const response = await fetch('/api/orders?limit=5', {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
+          credentials: 'include',
         });
 
         if (!response.ok) {
@@ -29,19 +19,13 @@ export default function AdminStats({ stats, loading }) {
         }
 
         const result = await response.json();
-        
-        console.log('Orders API Response:', result); // Debug log
 
-        // Check if response has data property (from controller structure)
+        // API returns paginated response: { totalItems, totalPages, currentPage, data: [...] }
         if (result.data && Array.isArray(result.data)) {
           setRecentOrders(result.data.slice(0, 5));
         } else if (Array.isArray(result)) {
           // Fallback for direct array response
           setRecentOrders(result.slice(0, 5));
-        } else if (result.message) {
-          // API returned an error message
-          console.error('API Error:', result.message);
-          setRecentOrders([]);
         } else {
           console.error('Unexpected response format:', result);
           setRecentOrders([]);

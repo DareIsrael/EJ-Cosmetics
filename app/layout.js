@@ -1,8 +1,8 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import NextAuthProvider from '@/components/SessionProvider';
 import { AuthProvider } from '@/contexts/AuthContext';
 import { CartProvider } from '@/contexts/CartContext';
-import { Toaster } from 'react-hot-toast';
 import CustomToast from '@/components/CustomToast';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -28,31 +28,16 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-50`}
       >
-        <AuthProvider>
-          <CartProvider>
-            <Navbar />
-            <main className="min-h-screen pt-16">{children}</main>
-            <CustomToast />
-            <Footer />
-            {/* <Toaster 
-              position="top-right"
-              toastOptions={{
-                duration: 3000,
-                style: {
-                  background: '#363636',
-                  color: '#fff',
-                },
-                success: {
-                  duration: 3000,
-                  theme: {
-                    primary: 'green',
-                    secondary: 'black',
-                  },
-                },
-              }}
-            /> */}
-          </CartProvider>
-        </AuthProvider>
+        <NextAuthProvider>
+          <AuthProvider>
+            <CartProvider>
+              <Navbar />
+              <main className="min-h-screen pt-16">{children}</main>
+              <CustomToast />
+              <Footer />
+            </CartProvider>
+          </AuthProvider>
+        </NextAuthProvider>
       </body>
     </html>
   );

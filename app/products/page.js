@@ -1,214 +1,85 @@
-// 'use client';
-// import { useEffect, useState } from 'react';
-// import { productAPI } from '@/services/api';
-// import ProductCard from '@/components/ProductCard';
-// import toast from 'react-hot-toast';
-
-// export default function ProductsPage() {
-//   const [products, setProducts] = useState([]);
-//   const [filteredProducts, setFilteredProducts] = useState([]);
-//   const [loading, setLoading] = useState(true);
-//   const [searchTerm, setSearchTerm] = useState('');
-//   const [selectedCategory, setSelectedCategory] = useState('all');
-//   const [categories, setCategories] = useState([]);
-
-//   useEffect(() => {
-//     fetchProducts();
-//   }, []);
-
-//   useEffect(() => {
-//     filterProducts();
-//   }, [searchTerm, selectedCategory, products]);
-
-//   const fetchProducts = async () => {
-//     try {
-//       setLoading(true);
-//       const response = await productAPI.getAll();
-//       const productsData = response.data || [];
-//       setProducts(productsData);
-//       setFilteredProducts(productsData);
-      
-//       const uniqueCategories = [...new Set(productsData.map(product => product.category))];
-//       setCategories(uniqueCategories);
-//     } catch (error) {
-//       console.error('Error fetching products:', error);
-//       toast.error('Failed to load products');
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   const filterProducts = () => {
-//     let filtered = [...products];
-
-//     if (searchTerm) {
-//       filtered = filtered.filter(product =>
-//         product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-//         product.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-//         product.category.toLowerCase().includes(searchTerm.toLowerCase())
-//       );
-//     }
-
-//     if (selectedCategory !== 'all') {
-//       filtered = filtered.filter(product =>
-//         product.category === selectedCategory
-//       );
-//     }
-
-//     setFilteredProducts(filtered);
-//   };
-
-//   const clearFilters = () => {
-//     setSearchTerm('');
-//     setSelectedCategory('all');
-//   };
-
-//   if (loading) {
-//     return (
-//       <div className="min-h-screen flex items-center justify-center">
-//         <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-pink-500"></div>
-//       </div>
-//     );
-//   }
-
-//   return (
-//     <div className="min-h-screen bg-gray-50 py-8">
-//       <div className="container mx-auto px-4">
-//         {/* Header */}
-//         <div className="text-center mb-8">
-//           <h1 className="text-1xl text-center mb-4 text-gray-900 font-light tracking-widest uppercase border-b-2 border-pink-400 pb-2 inline-block">Our Products</h1>
-//           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-//             Discover our carefully curated collection of premium beauty products
-//           </p>
-//         </div>
-
-//         {/* Filters */}
-//         <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
-//           <div className="flex flex-col md:flex-row gap-4 items-center">
-//             {/* Search */}
-//             <div className="flex-1 w-full">
-//               <div className="relative">
-//                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-//                   <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-//                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-//                   </svg>
-//                 </div>
-//                 <input
-//                   type="text"
-//                   placeholder="Search products..."
-//                   value={searchTerm}
-//                   onChange={(e) => setSearchTerm(e.target.value)}
-//                   className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-pink-500"
-//                 />
-//               </div>
-//             </div>
-
-//             {/* Category Filter */}
-//             <div className="w-full md:w-48">
-//               <select
-//                 value={selectedCategory}
-//                 onChange={(e) => setSelectedCategory(e.target.value)}
-//                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-pink-500"
-//               >
-//                 <option value="all">All Categories</option>
-//                 {categories.map((category) => (
-//                   <option key={category} value={category}>
-//                     {category}
-//                   </option>
-//                 ))}
-//               </select>
-//             </div>
-
-//             {/* Clear Filters */}
-//             {(searchTerm || selectedCategory !== 'all') && (
-//               <button
-//                 onClick={clearFilters}
-//                 className="px-6 py-3 text-gray-600 hover:text-gray-800 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors whitespace-nowrap"
-//               >
-//                 Clear Filters
-//               </button>
-//             )}
-//           </div>
-
-//           {/* Results Info */}
-//           <div className="text-center mt-4 text-gray-600">
-//             <span>
-//               Showing {filteredProducts.length} of {products.length} products
-//               {(searchTerm || selectedCategory !== 'all') && ' (filtered)'}
-//             </span>
-//           </div>
-//         </div>
-
-//         {/* Products Grid */}
-//         {filteredProducts.length > 0 ? (
-//           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
-//             {filteredProducts.map((product) => (
-//               <ProductCard key={product._id} product={product} />
-//             ))}
-//           </div>
-//         ) : (
-//           <div className="text-center py-16">
-//             <div className="text-gray-400 mb-4">
-//               <svg className="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-//                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
-//               </svg>
-//             </div>
-//             <h3 className="text-xl font-semibold text-gray-900 mb-2">No Products Found</h3>
-//             <p className="text-gray-600 mb-6">
-//               {products.length === 0 
-//                 ? "No products available at the moment."
-//                 : "No products match your search criteria."
-//               }
-//             </p>
-//             {products.length > 0 && (
-//               <button
-//                 onClick={clearFilters}
-//                 className="bg-pink-600 text-white px-6 py-3 rounded-lg hover:bg-pink-700 transition-colors"
-//               >
-//                 Clear Filters
-//               </button>
-//             )}
-//           </div>
-//         )}
-//       </div>
-//     </div>
-//   );
-// }
-
 
 'use client';
 import { useEffect, useState } from 'react';
 import { productAPI } from '@/services/api';
 import ProductCard from '@/components/ProductCard';
+import Pagination from '@/components/Pagination';
 import toast from 'react-hot-toast';
 
 export default function ProductsPage() {
   const [products, setProducts] = useState([]);
-  const [filteredProducts, setFilteredProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  
+  // Filtering and pagination state
   const [searchTerm, setSearchTerm] = useState('');
+  const [debouncedSearch, setDebouncedSearch] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [categories, setCategories] = useState([]);
   const [sortBy, setSortBy] = useState('name');
+  
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalItems, setTotalItems] = useState(0);
 
+  // Fetch categories once on mount
   useEffect(() => {
-    fetchProducts();
+    const fetchCategories = async () => {
+      try {
+        const res = await fetch('/api/products/categories');
+        const data = await res.json();
+        if (data.success && Array.isArray(data.data)) {
+          setCategories(data.data);
+        }
+      } catch (err) {
+        console.error('Failed to load categories:', err);
+      }
+    };
+    fetchCategories();
   }, []);
 
+  // Debounce search term
   useEffect(() => {
-    filterProducts();
-  }, [searchTerm, selectedCategory, products, sortBy]);
+    const handler = setTimeout(() => {
+      setDebouncedSearch(searchTerm);
+      setCurrentPage(1); // Reset to page 1 on new search
+    }, 500);
+    return () => clearTimeout(handler);
+  }, [searchTerm]);
+
+  // Handle category or sort changes (reset to page 1)
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [selectedCategory, sortBy]);
+
+  // Fetch from backend
+  useEffect(() => {
+    fetchProducts();
+  }, [debouncedSearch, selectedCategory, sortBy, currentPage]);
 
   const fetchProducts = async () => {
     try {
       setLoading(true);
-      const response = await productAPI.getAll();
-      const productsData = response.data || [];
-      setProducts(productsData);
-      setFilteredProducts(productsData);
+      const limit = 20; // Default limit for grids
+      // Send parameters to backend
+      const response = await productAPI.getAll({
+        page: currentPage,
+        limit,
+        search: debouncedSearch,
+        category: selectedCategory,
+        sort: sortBy
+      });
       
-      const uniqueCategories = [...new Set(productsData.map(product => product.category))];
-      setCategories(uniqueCategories);
+      const payload = response.data; // Now follows { totalItems, totalPages, currentPage, data }
+      
+      if (payload && payload.data) {
+        setProducts(payload.data);
+        setTotalPages(payload.totalPages);
+        setTotalItems(payload.totalItems);
+        // For distinct categories, you either fetch all once, or use an API route to group. 
+        // For now, if we don't have categories, let's keep the existing logic where they load statically or from an initial fetch.
+      } else {
+        setProducts(payload || []);
+      }
     } catch (error) {
       console.error('Error fetching products:', error);
       toast.error('Failed to load products');
@@ -217,44 +88,11 @@ export default function ProductsPage() {
     }
   };
 
-  const filterProducts = () => {
-    let filtered = [...products];
-
-    if (searchTerm) {
-      filtered = filtered.filter(product =>
-        product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        product.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        product.category.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    }
-
-    if (selectedCategory !== 'all') {
-      filtered = filtered.filter(product =>
-        product.category === selectedCategory
-      );
-    }
-
-    // Sort products
-    filtered.sort((a, b) => {
-      switch (sortBy) {
-        case 'price-low':
-          return (a.price || 0) - (b.price || 0);
-        case 'price-high':
-          return (b.price || 0) - (a.price || 0);
-        case 'featured':
-          return (b.featured ? 1 : 0) - (a.featured ? 1 : 0);
-        default:
-          return a.name.localeCompare(b.name);
-      }
-    });
-
-    setFilteredProducts(filtered);
-  };
-
   const clearFilters = () => {
     setSearchTerm('');
     setSelectedCategory('all');
     setSortBy('name');
+    setCurrentPage(1);
   };
 
   if (loading) {
@@ -289,7 +127,7 @@ export default function ProductsPage() {
             {/* Quick Stats */}
             <div className="flex justify-center space-x-8 text-sm text-gray-500">
               <div className="text-center">
-                <div className="text-2xl font-bold text-pink-600">{products.length}</div>
+                <div className="text-2xl font-bold text-pink-600">{totalItems}</div>
                 <div>Total Products</div>
               </div>
               <div className="text-center">
@@ -366,9 +204,8 @@ export default function ProductsPage() {
           {/* Results Info and Active Filters */}
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mt-6 pt-6 border-t border-gray-100">
             <div className="text-gray-600 mb-3 sm:mb-0">
-              <span className="font-medium">{filteredProducts.length}</span> of{' '}
-              <span className="font-medium">{products.length}</span> products
-              {(searchTerm || selectedCategory !== 'all') && ' (filtered)'}
+              Showing page <span className="font-medium">{currentPage}</span> of{' '}
+              <span className="font-medium">{totalPages}</span> ({totalItems} total products)
             </div>
             
             {/* Active Filters */}
@@ -400,12 +237,22 @@ export default function ProductsPage() {
         </div>
 
         {/* Products Grid */}
-        {filteredProducts.length > 0 ? (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-            {filteredProducts.map((product) => (
-              <ProductCard key={product._id} product={product} />
-            ))}
-          </div>
+        {products.length > 0 ? (
+          <>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+              {products.map((product) => (
+                <ProductCard key={product._id} product={product} />
+              ))}
+            </div>
+            {/* Pagination Controls */}
+            {totalPages > 1 && (
+              <Pagination 
+                currentPage={currentPage} 
+                totalPages={totalPages} 
+                onPageChange={setCurrentPage} 
+              />
+            )}
+          </>
         ) : (
           <div className="text-center py-16 bg-white rounded-2xl shadow-lg border border-gray-100">
             <div className="text-gray-300 mb-6">

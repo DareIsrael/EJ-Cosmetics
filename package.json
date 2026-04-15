@@ -17,6 +17,7 @@
     "mongoose": "^8.19.2",
     "multer": "^2.0.2",
     "next": "^16.1.6",
+    "next-auth": "^4.24.13",
     "nodemailer": "^7.0.10",
     "paystack": "^2.0.1",
     "postcss": "^8.5.6",

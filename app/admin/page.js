@@ -15,6 +15,7 @@ export default function AdminDashboard() {
     pendingOrders: 0,
   });
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     fetchStats();
@@ -23,18 +24,29 @@ export default function AdminDashboard() {
   const fetchStats = async () => {
     try {
       setLoading(true);
+      setError(null);
       
-      const [productsRes, ordersRes] = await Promise.all([
+      // Use allSettled so one failure doesn't kill both requests
+      const [productsRes, ordersRes] = await Promise.allSettled([
         productAPI.getAll(),
         orderAPI.getAll()
       ]);
 
-      // The service already handles the response structure
-      const products = productsRes.data || [];
-      const orders = ordersRes.data || [];
+      // Extract from paginated response: { totalItems, totalPages, currentPage, data: [...] }
+      const productsPayload = productsRes.status === 'fulfilled' ? productsRes.value.data : null;
+      const ordersPayload = ordersRes.status === 'fulfilled' ? ordersRes.value.data : null;
 
-      console.log('Products:', products);
-      console.log('Orders:', orders);
+      const totalProducts = productsPayload?.totalItems ?? 0;
+      const orders = ordersPayload?.data || [];
+      const totalOrders = ordersPayload?.totalItems ?? orders.length;
+
+      // Track partial failures
+      const failures = [];
+      if (productsRes.status === 'rejected') failures.push('products');
+      if (ordersRes.status === 'rejected') failures.push('orders');
+      if (failures.length > 0) {
+        setError(`Failed to load ${failures.join(' and ')}. Some stats may be incomplete.`);
+      }
 
       const totalRevenue = orders
         .filter(order => order.paymentStatus === 'completed')
@@ -45,14 +57,14 @@ export default function AdminDashboard() {
       ).length;
 
       setStats({
-        totalProducts: products.length,
-        totalOrders: orders.length,
+        totalProducts,
+        totalOrders,
         totalRevenue,
         pendingOrders,
       });
-    } catch (error) {
-      console.error('Error fetching stats:', error);
-      // Set default stats on error
+    } catch (err) {
+      console.error('Error fetching stats:', err);
+      setError('Failed to load dashboard data.');
       setStats({
         totalProducts: 0,
         totalOrders: 0,
@@ -67,7 +79,22 @@ export default function AdminDashboard() {
   const renderTabContent = () => {
     switch (activeTab) {
       case 'stats':
-        return <AdminStats stats={stats} loading={loading} />;
+        return (
+          <>
+            {error && (
+              <div className="mb-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg flex items-center justify-between">
+                <p className="text-yellow-800 text-sm">{error}</p>
+                <button
+                  onClick={fetchStats}
+                  className="ml-4 text-sm text-yellow-700 underline hover:text-yellow-900"
+                >
+                  Retry
+                </button>
+              </div>
+            )}
+            <AdminStats stats={stats} loading={loading} />
+          </>
+        );
       case 'products':
         return <AdminProducts />;
       case 'orders':

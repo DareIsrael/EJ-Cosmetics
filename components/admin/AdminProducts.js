@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { productAPI } from '@/services/api';
 import toast from 'react-hot-toast';
 import Image from 'next/image';
-
+import Pagination from '@/components/Pagination';
 
 export default function AdminProducts() {
   const [products, setProducts] = useState([]);
@@ -11,6 +11,11 @@ export default function AdminProducts() {
   const [showForm, setShowForm] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
   const [uploadingImage, setUploadingImage] = useState(false);
+  
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalItems, setTotalItems] = useState(0);
+
   const [formData, setFormData] = useState({
     name: '',
     description: '',
@@ -25,15 +30,23 @@ export default function AdminProducts() {
   // ✅ ADD THIS MISSING FUNCTION
   useEffect(() => {
     fetchProducts();
-  }, []);
+  }, [currentPage]);
 
   // ✅ ADD THIS MISSING FUNCTION
   const fetchProducts = async () => {
     try {
       setLoading(true);
-      const response = await productAPI.getAll();
-      console.log('Products response:', response); // Debug log
-      setProducts(response.data || []);
+      const limit = 10;
+      const response = await productAPI.getAll({ page: currentPage, limit });
+      
+      const payload = response.data;
+      if (payload && payload.data) {
+        setProducts(payload.data);
+        setTotalPages(payload.totalPages);
+        setTotalItems(payload.totalItems);
+      } else {
+        setProducts(payload || []);
+      }
     } catch (error) {
       console.error('Fetch products error:', error);
       toast.error('Failed to fetch products');
@@ -49,18 +62,14 @@ export default function AdminProducts() {
       const uploadFormData = new FormData();
       uploadFormData.append('image', file);
 
-      console.log('Starting image upload...'); // Debug log
-
       const response = await fetch('/api/upload', {
         method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        },
+        credentials: 'include',
         body: uploadFormData,
       });
 
       const result = await response.json();
-      console.log('Upload response:', result); // Debug log
+
 
       if (!response.ok) {
         throw new Error(result.message || 'Upload failed');
@@ -120,7 +129,7 @@ export default function AdminProducts() {
     
     try {
       // Validate required fields
-      if (!formData.name || !formData.description || !formData.price || !formData.category || !formData.stock) {
+      if (!formData.name || !formData.description || !formData.price || !formData.category || formData.stock === '' || formData.stock === null || formData.stock === undefined) {
         toast.error('Please fill in all required fields');
         return;
       }
@@ -141,7 +150,7 @@ export default function AdminProducts() {
         featured: formData.featured,
       };
 
-      console.log('Submitting product:', productData); // Debug log
+
 
       if (editingProduct) {
         await productAPI.update(editingProduct._id, productData);
@@ -155,8 +164,8 @@ export default function AdminProducts() {
       resetForm();
       fetchProducts(); // Refresh the list
     } catch (error) {
-      console.error('Save product error:', error);
-      toast.error('Failed to save product');
+      console.error('Save product error:', error.response?.data || error.message);
+      toast.error(error.response?.data?.message || 'Failed to save product');
     }
   };
 
@@ -217,7 +226,7 @@ export default function AdminProducts() {
         <h2 className="text-2xl font-bold text-gray-900">Products Management</h2>
         <div className="flex items-center space-x-4">
           <span className="text-sm text-gray-600">
-            {products.length} product{products.length !== 1 ? 's' : ''}
+            {totalItems} total product{totalItems !== 1 ? 's' : ''}
           </span>
           <button
             onClick={() => setShowForm(true)}
@@ -481,6 +490,15 @@ export default function AdminProducts() {
           </div>
         )}
       </div>
+
+      {/* Pagination Controls */}
+      {totalPages > 1 && (
+        <Pagination 
+          currentPage={currentPage} 
+          totalPages={totalPages} 
+          onPageChange={setCurrentPage} 
+        />
+      )}
     </div>
   );
 }

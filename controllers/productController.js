@@ -2,11 +2,69 @@ import dbConnect from '@/lib/mongodb';
 import Product from '@/models/Product';
 import cloudinary from '@/lib/cloudinary';
 
-export async function getAllProducts() {
+export async function getAllProducts({ page = 1, limit = 0, search = '', category = 'all', sort = 'name' } = {}) {
   try {
     await dbConnect();
-    const products = await Product.find().sort({ createdAt: -1 });
-    return { success: true, data: products };
+    
+    // Construct query
+    const query = {};
+    if (category !== 'all') {
+      query.category = category;
+    }
+    if (search) {
+      query.$or = [
+        { name: { $regex: search, $options: 'i' } },
+        { description: { $regex: search, $options: 'i' } },
+        { category: { $regex: search, $options: 'i' } }
+      ];
+    }
+
+    // Sorting logic
+    let sortObj = { createdAt: -1 };
+    switch (sort) {
+      case 'price-low':
+        sortObj = { price: 1 };
+        break;
+      case 'price-high':
+        sortObj = { price: -1 };
+        break;
+      case 'featured':
+        sortObj = { featured: -1, createdAt: -1 };
+        break;
+      case 'name':
+        sortObj = { name: 1 };
+        break;
+      default:
+        sortObj = { createdAt: -1 };
+        break;
+    }
+
+    // Pagination logic
+    const parsedPage = parseInt(page, 10);
+    const parsedLimit = parseInt(limit, 10);
+
+    const totalItems = await Product.countDocuments(query);
+    
+    // If limit is 0 (no pagination specified), fallback to all items (for backward compatibility)
+    // but ideally the frontend now passes a limit.
+    const actualLimit = parsedLimit > 0 ? parsedLimit : Math.max(totalItems, 1);
+    const totalPages = Math.ceil(totalItems / actualLimit);
+    const skip = (parsedPage - 1) * actualLimit;
+
+    const products = await Product.find(query)
+      .sort(sortObj)
+      .skip(skip)
+      .limit(actualLimit);
+
+    return { 
+      success: true, 
+      data: {
+        totalItems,
+        totalPages: parsedLimit > 0 ? totalPages : 1,
+        currentPage: parsedPage,
+        data: products
+      }
+    };
   } catch (error) {
     console.error('Get products error:', error);
     return { success: false, message: 'Failed to fetch products', status: 500 };

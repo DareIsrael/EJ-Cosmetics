@@ -1,11 +1,17 @@
 'use client';
-import { useEffect } from 'react';
+import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '@/contexts/AuthContext';
+import { useEffect } from 'react';
 
+/**
+ * Client-side route protection component.
+ * This is a backup guard — primary protection is via middleware.js.
+ */
 export default function ProtectedRoute({ children, adminOnly = false }) {
-  const { user, loading } = useAuth();
+  const { data: session, status } = useSession();
   const router = useRouter();
+  const loading = status === 'loading';
+  const user = session?.user;
 
   useEffect(() => {
     if (!loading && !user) {

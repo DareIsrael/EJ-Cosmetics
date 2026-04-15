@@ -1,38 +1,56 @@
 /* eslint react/no-unescaped-entities: "off" */
 
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import { useSession } from 'next-auth/react';
 import { orderAPI } from '@/services/api';
 import ProtectedRoute from '@/components/ProtectedRoute';
-import { useAuth } from '@/contexts/AuthContext';
+import Pagination from '@/components/Pagination';
 import Link from 'next/link';
-import Image from 'next/image';
-
-export const dynamic = 'force-dynamic';
 
 export default function UserDashboard() {
+  const { data: session, status } = useSession();
+  const user = session?.user;
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [activeTab, setActiveTab] = useState('orders');
-  const { user } = useAuth();
 
-  useEffect(() => {
-    fetchOrders();
-  }, []);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalItems, setTotalItems] = useState(0);
 
-  const fetchOrders = async () => {
+  const fetchOrders = useCallback(async () => {
+    setError(null);
+    setLoading(true);
     try {
-      const response = await orderAPI.getAll();
-      setOrders(response.data);
-    } catch (error) {
-      console.error('Error fetching orders:', error);
+      const response = await orderAPI.getAll({ page: currentPage, limit: 10 });
+      const payload = response.data;
+      
+      if (payload && payload.data) {
+        setOrders(payload.data);
+        setTotalPages(payload.totalPages);
+        setTotalItems(payload.totalItems);
+      } else {
+        setOrders(payload || []);
+      }
+    } catch (err) {
+      console.error('Error fetching orders:', err);
+      setError('Failed to load your orders. Please try again.');
     } finally {
       setLoading(false);
     }
-  };
+  }, [currentPage]);
 
-  const getStatusColor = (status) => {
-    switch (status) {
+  // Only fetch orders once session is authenticated
+  useEffect(() => {
+    if (status === 'authenticated') {
+      fetchOrders();
+    }
+  }, [status, fetchOrders]);
+
+  const getStatusColor = (orderStatus) => {
+    switch (orderStatus) {
       case 'completed':
       case 'delivered':
         return 'bg-green-100 text-green-800';
@@ -47,8 +65,8 @@ export default function UserDashboard() {
     }
   };
 
-  const getPaymentStatusColor = (status) => {
-    switch (status) {
+  const getPaymentStatusColor = (paymentStatus) => {
+    switch (paymentStatus) {
       case 'completed':
         return 'bg-green-100 text-green-800';
       case 'pending':
@@ -103,6 +121,21 @@ export default function UserDashboard() {
                 <div className="flex justify-center items-center py-12">
                   <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-pink-500"></div>
                 </div>
+              ) : error ? (
+                <div className="text-center py-12">
+                  <div className="text-red-400 mb-4">
+                    <svg className="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                    </svg>
+                  </div>
+                  <p className="text-gray-600 mb-4">{error}</p>
+                  <button
+                    onClick={fetchOrders}
+                    className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-pink-600 hover:bg-pink-700"
+                  >
+                    Try Again
+                  </button>
+                </div>
               ) : orders.length > 0 ? (
                 <div className="space-y-6">
                   {orders.map((order) => (
@@ -137,7 +170,7 @@ export default function UserDashboard() {
                               <div className="flex-1">
                                 <p className="font-medium">{item.productId?.name}</p>
                                 <p className="text-sm text-gray-600">
-                                  Quantity: {item.quantity} × ₦{item.price.toLocaleString()}
+                                  Quantity: {item.quantity} × ₦{item.price?.toLocaleString()}
                                 </p>
                               </div>
                             </div>
@@ -157,7 +190,7 @@ export default function UserDashboard() {
                             </span>
                           </div>
                           <div className="text-lg font-semibold">
-                            Total: ₦{order.totalAmount.toLocaleString()}
+                            Total: ₦{order.totalAmount?.toLocaleString()}
                           </div>
                         </div>
                       </div>
@@ -180,6 +213,15 @@ export default function UserDashboard() {
                     Start Shopping
                   </Link>
                 </div>
+              )}
+
+              {/* Pagination Controls */}
+              {totalPages > 1 && (
+                <Pagination 
+                  currentPage={currentPage} 
+                  totalPages={totalPages} 
+                  onPageChange={setCurrentPage} 
+                />
               )}
             </div>
           )}
@@ -207,13 +249,6 @@ export default function UserDashboard() {
                       </span>
                     </p>
                   </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">Member Since</label>
-                    <p className="mt-1 text-gray-600">
-                      {user?.createdAt ? new Date(user.createdAt).toLocaleDateString() : 'N/A'}
-                    </p>
-                  </div>
                 </div>
                 
                 <div className="mt-6 pt-6 border-t border-gray-200">
@@ -229,6 +264,3 @@ export default function UserDashboard() {
     </ProtectedRoute>
   );
 }
-
-
-

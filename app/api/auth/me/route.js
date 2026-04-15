@@ -1,31 +1,32 @@
 import { NextResponse } from 'next/server';
-import { authenticate } from '@/utils/auth';
-import { getCurrentUser } from '@/controllers/authController';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/authOptions';
+import dbConnect from '@/lib/mongodb';
+import User from '@/models/User';
 
-export async function GET(request) {
+export async function GET() {
   try {
-    const user = await authenticate(request);
-    
-    if (!user) {
+    const session = await getServerSession(authOptions);
+
+    if (!session?.user?.id) {
       return NextResponse.json(
         { message: 'Unauthorized' },
         { status: 401 }
       );
     }
 
-    // Get fresh user data
-    const authHeader = request.headers.get('authorization');
-    const token = authHeader.slice(7);
-    const result = await getCurrentUser(token);
+    // Fetch fresh user data from DB
+    await dbConnect();
+    const user = await User.findById(session.user.id).select('-password');
 
-    if (!result.success) {
+    if (!user) {
       return NextResponse.json(
-        { message: result.message },
-        { status: result.status }
+        { message: 'User not found' },
+        { status: 404 }
       );
     }
 
-    return NextResponse.json(result.data);
+    return NextResponse.json(user);
   } catch (error) {
     console.error('Get current user route error:', error);
     return NextResponse.json(
